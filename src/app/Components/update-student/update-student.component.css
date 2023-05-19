@@ -1,0 +1,13 @@
+
+form > div > span{
+
+  color: red;
+  position: absolute;
+  top: 72%;
+  right: 20px;
+  transform: translateY(-50%);
+}
+
+form > div {
+  position: relative;
+}

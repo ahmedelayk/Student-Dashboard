@@ -1,0 +1,41 @@
+<div class="p-3">
+  <form class="w-75 m-auto" [formGroup]="FormValidation">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input #name formControlName='name' type="text" id="name" class="form-control">
+      <span
+        *ngIf="FormValidation['controls']['name'].touched && (FormValidation['controls']['name'].status != 'VALID')">Not
+        valid</span>
+    </div>
+    <div class="mb-3">
+      <label for="age" class="form-label">Age</label>
+      <input #age formControlName='age' type="text" id="age" class="form-control">
+      <span
+        *ngIf="FormValidation['controls']['age'].touched && (FormValidation['controls']['age'].status != 'VALID')">Not
+        valid</span>
+    </div>
+    <div class="mb-3">
+      <label for="address" class="form-label">Address</label>
+      <input #address formControlName='address' type="text" id="address" class="form-control">
+      <span
+        *ngIf="FormValidation['controls']['address'].touched && (FormValidation['controls']['address'].status != 'VALID')">Not
+        valid</span>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input #email formControlName='email' type="text" id="email" class="form-control">
+      <span
+        *ngIf="FormValidation['controls']['email'].touched && (FormValidation['controls']['email'].status != 'VALID')">Not
+        valid</span>
+    </div>
+    <div class="mb-3">
+      <label for="mobile" class="form-label">Mobile</label>
+      <input #mobile formControlName='mobile' type="text" id="mobile" class="form-control">
+      <span
+        *ngIf="FormValidation['controls']['mobile'].touched && (FormValidation['controls']['mobile'].status != 'VALID')">Not
+        valid</span>
+    </div>
+    <button type="submit" class="button bg-second-brown text-white hover-brown"
+      (click)="addStudent(name.value, age.value, address.value, email.value, mobile.value)">Add</button>
+  </form>
+</div>

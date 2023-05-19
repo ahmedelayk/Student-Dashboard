@@ -1,0 +1,39 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "ahmed",
+      "age": 24,
+      "address": "cairo, Egypt",
+      "phone": "01210898966"
+    },
+    {
+      "id": 2,
+      "name": "obaida",
+      "age": 6,
+      "address": "Giza, Egypt",
+      "phone": "01111111111"
+    },
+    {
+      "id": 3,
+      "name": "raghad",
+      "age": 5,
+      "address": "Benha, Egypt",
+      "phone": "02222222222"
+    },
+    {
+      "id": 4,
+      "name": "Israa",
+      "age": 21,
+      "address": "Alex, Egypt",
+      "phone": "0333333333333"
+    },
+    {
+      "id": 5,
+      "name": "adam",
+      "age": 5,
+      "address": "aswan, Egypt",
+      "phone": "07777777777"
+    }
+  ]
+}

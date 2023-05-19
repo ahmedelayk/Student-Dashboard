@@ -1,0 +1,38 @@
+<h1 class="text-brown">Student update</h1>
+
+<div class="p-3" *ngIf="student">
+  <form class="w-75 m-auto" [formGroup]="FormValidation">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input #stdname formControlName="name" type="text" [value]="student.name" name="" id="name" class="form-control">
+      <span *ngIf="!nameValid">not Valid</span>
+    </div>
+    <div class="mb-3">
+      <label for="age" class="form-label">Age</label>
+      <input #age formControlName="age" type="text" [value]="student.age " name="" id="age" class="form-control">
+      <span *ngIf="!ageValid">Not valid</span>
+    </div>
+    <div class="mb-3">
+      <label for="address" class="form-label">Address</label>
+      <input #address formControlName="address" type="text" [value]="student.address " name="" id="address"
+        class="form-control">
+      <span *ngIf="!addressValid">Not valid</span>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">email</label>
+      <input #email formControlName="email" type="text" [value]="student.email " name="" id="email"
+        class="form-control">
+      <span *ngIf="!emailValid">Not valid</span>
+    </div>
+    <div class="mb-3">
+      <label for="mobile" class="form-label">mobile</label>
+      <input #mobile formControlName="mobile" type="text" [value]="student.mobile" name="" id="mobile"
+        class="form-control">
+      <span *ngIf="!mobileValid">Not valid</span>
+    </div>
+    <div class="mt-4">
+      <button type="submit" class="button bg-second-brown text-white hover-brown"
+        (click)="updateStudent(stdname.value, age.value, address.value, email.value, mobile.value)">update</button>
+    </div>
+  </form>
+</div>
