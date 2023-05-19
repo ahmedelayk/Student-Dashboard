@@ -1,6 +1,10 @@
-# App1
+# Students Dashboard
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.0.
+
+## JSON-Server
+
+Run `json-server db.json --watch` it will serving your JSON data on `http://localhost:3000` (or the specified port).
 
 ## Development server
 
