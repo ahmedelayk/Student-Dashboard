@@ -7,8 +7,7 @@ import { Injectable } from '@angular/core';
 export class MainService {
 
   constructor(private client: HttpClient) {}
-  private Base_URL = 'http://localhost:3000/students';
-  // private Base_URL = 'https://jsonplaceholder.typicode.com/users';
+  private Base_URL = 'https://students-dashboard.onrender.com/students';
   // Handling All request methods
   getAllStudents(){
     return this.client.get(this.Base_URL);
