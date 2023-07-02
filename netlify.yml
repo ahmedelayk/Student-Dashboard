@@ -1,0 +1,5 @@
+[[plugins]]
+  package = "netlify-plugin-angular"
+
+  [plugins.inputs.resources]
+    maxBundleSize = 2048
