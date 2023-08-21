@@ -19,7 +19,7 @@
   <span class="placeholder col-10 bg-secondary"></span>
 </div>
 <div *ngIf="students" class="border-10">
-  <table class=" table ">
+  <table class=" table table-striped">
     <thead>
       <tr>
         <th scope="col" class="w-15">Name</th>
@@ -35,20 +35,22 @@
     </thead>
     <tbody>
       <tr *ngFor="let s of students">
-        <td>{{s.name}}</td>
+        <td><span>{{s.name}}</span></td>
         <td>{{s.age}}</td>
         <td>{{s.address}}</td>
         <td>{{s.email}}</td>
         <td>{{s.mobile}}</td>
         <!-- <input type="hidden" #id value="{{s.id}}"> -->
-        <td><a routerLink="/students/{{s.id}}" class="btn btn-primary d-flex gap-1 align-items-center"> <i
-              class="fa-solid fa-circle-info"></i>Details</a></td>
-        <td><a routerLink="/update/{{s.id}}" class="btn btn-success d-flex gap-1 align-items-center"><i
-              class="fa-solid fa-pen-to-square"></i>
-            Edit</a>
+        <td>
+          <a routerLink="/students/{{s.id}}" class="btn btn-primary d-flex gap-1 align-items-center justify-content-center"> <i
+              class="fa-solid fa-circle-info"></i><span>Details</span></a>
         </td>
-        <td><a (click)="deleteStudent(s.id)" class="btn btn-danger d-flex gap-1 align-items-center"> <i
-              class="fa-solid fa-circle-xmark"></i> Delete</a>
+        <td><a routerLink="/update/{{s.id}}" class="btn btn-success d-flex gap-1 align-items-center justify-content-center"><i
+              class="fa-solid fa-pen-to-square"></i>
+            <span>Edit</span></a>
+        </td>
+        <td><a (click)="deleteStudent(s.id)" class="btn btn-danger d-flex gap-1 align-items-center justify-content-center"> <i
+              class="fa-solid fa-circle-xmark"></i> <span>Delete</span></a>
         </td>
       </tr>
     </tbody>
