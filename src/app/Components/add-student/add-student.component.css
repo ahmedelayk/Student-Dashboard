@@ -1,6 +1,5 @@
 
 form > div > span{
-
   color: red;
   position: absolute;
   top: 72%;
@@ -11,3 +10,11 @@ form > div > span{
 form > div {
   position: relative;
 }
+
+input.ng-touched.ng-invalid {
+  border: 1px solid red;
+}
+
+/* input.ng-touched.ng-valid {
+  border: 1px solid var(--brown);
+} */

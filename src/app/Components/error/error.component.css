@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f6e2ff73;
+  /* background-color: #f6e2ff73; */
   border-radius: 10px;
 }
 .container>div>h2 {

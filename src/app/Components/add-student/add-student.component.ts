@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MainService } from 'src/app/Services/main.service';
 import Swal from 'sweetalert2';
 
@@ -9,60 +9,154 @@ import Swal from 'sweetalert2';
   templateUrl: './add-student.component.html',
   styleUrls: ['./add-student.component.css']
 })
-export class AddStudentComponent {
-  constructor(public service:MainService, public ro:Router){}
-  addStudent(name:any, age:any, address:any, email:any, mobile:any){
-    if(this.FormValidation.valid){
-      let newStudent = {name, age, address, email, mobile};
-      this.service.addStudent(newStudent).subscribe();
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Student has been Added',
-        showConfirmButton: false,
-        timer: 1500
-      });
-      this.ro.navigateByUrl("/students");
+export class AddStudentComponent implements OnInit {
+
+  studentForm!: FormGroup;
+  studentId!: number;
+  student!: any;
+  constructor(private service:MainService,
+    private router:Router,
+    private formBuilder: FormBuilder,
+    private activatedRoute: ActivatedRoute
+  ){}
+  ngOnInit(): void {
+    // console.log(this.activatedRoute.routeConfig?.path);
+    if(this.activatedRoute.snapshot.params['id']){
+      console.log('update')
+      this.studentId = this.activatedRoute.snapshot.params['id'];
+      this.getStudentById(this.studentId);
+      this.initFormAdd();
     }else{
-      console.log(this.FormValidation);
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: `can't add, check out data again`,
-        footer: '<a href="/students">Back to Home</a>'
-      })
+      console.log('add')
+      this.initFormAdd();
     }
+  }
+  
+  initFormAdd() {
+    this.studentForm = this.formBuilder.group({
+      name: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+      age: [null, [Validators.required, Validators.min(10), Validators.max(30)]],
+      address: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
+      email: [null, [Validators.required, Validators.email]],
+      mobile: [null, [Validators.required, Validators.pattern(/[0-9]{11}$/)]],
+    })
+  }
 
+  initFormUpdate() {
+    this.studentForm = this.formBuilder.group({
+      name: [this.student.name, [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+      age: [this.student.age, [Validators.required, Validators.min(10), Validators.max(30)]],
+      address: [this.student.address, [Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
+      email: [this.student.email, [Validators.required, Validators.email]],
+      mobile: [this.student.mobile, [Validators.required, Validators.pattern(/^[0-9]{11}$/)]],
+    })
   }
-  FormValidation = new FormGroup({
-      name: new FormControl(null, [Validators.required, Validators.maxLength(40), Validators.pattern(/^[a-z\sA-Z]+$/ig)]),
-      age: new FormControl(null, [Validators.required, Validators.min(10), Validators.max(30), Validators.pattern(/^[0-9]{2}$/ig)]),
-      address: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(40)]),
-      email: new FormControl(null, [Validators.required, Validators.pattern(/[a-z0-9]+@[a-z]+\.[a-z]+/ig)]),
-      mobile: new FormControl(null, [Validators.required, Validators.pattern(/^(010|011|012|015)[0-9]{8}$/ig)])
-  })
 
-  get nameValid(){
-    return this.FormValidation.controls["name"].valid;
+  getStudentById(id: number){
+    this.student = this.service.getStudentById(id).subscribe({
+      next: (std) => {
+        this.student = std;
+        this.initFormUpdate();
+      },
+      error: (err) => console.log(err)
+    });
   }
-  get ageValid(){
-    return this.FormValidation.controls["age"].valid;
+  
+  get controls() {
+    return this.studentForm.controls;
   }
-  get addressValid(){
-    return this.FormValidation.controls["address"].valid;
+
+  submitAdd(){
+    if(!this.studentId){
+      if(this.studentForm.valid){
+        let newStudent = this.studentForm.value;
+        console.log(newStudent);
+        this.service.addStudent(newStudent).subscribe({
+          next: (res) => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Student has been Added',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.router.navigateByUrl("students");
+          }, error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: `can't add, check out data again`,
+              footer: '<a href="/students">Back to Home</a>'
+            })
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `can't add, check out data again`,
+          footer: '<a href="/students">Back to Home</a>'
+        })
+      }
+    } else {
+      if(this.studentForm.valid){
+        this.service.updateStudent(this.studentId ,this.studentForm.value).subscribe({
+          next: (res) => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Student has been Updated',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          }, error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: `can't update, check out data again`,
+              footer: '<a href="/students">Back to Home</a>'
+            })
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `can't update, check out data again`,
+          footer: '<a href="/students">Back to Home</a>'
+        })
+      }
+    }
   }
-  get emailValid(){
-    return this.FormValidation.controls["email"].valid;
-  }
-  get mobileValid(){
-    return this.FormValidation.controls["mobile"].valid;
-  }
-  // get AgeValid(){
-  //   return this.FormValidation.controls["age"].valid;
-  //   console.log("Value: ",this.FormValidation.value);
-  //   console.log("Valid: ",this.FormValidation.valid);
-  //   console.log("Age Valid: ",this.FormValidation.controls["age"].valid);
-  //   console.log("Name Valid: ",this.FormValidation.controls["name"].valid);
-  //   console.log("------------------------------")
+
+  // submitUpdate(){
+  //   if(this.studentForm.valid){
+  //     this.service.updateStudent(this.studentId ,this.studentForm.value).subscribe({
+  //       next: (res) => {
+  //         Swal.fire({
+  //           position: 'center',
+  //           icon: 'success',
+  //           title: 'Student has been Updated',
+  //           showConfirmButton: false,
+  //           timer: 1500
+  //         })
+  //       }, error: (err) => {
+  //         Swal.fire({
+  //           icon: 'error',
+  //           title: 'Oops...',
+  //           text: `can't update, check out data again`,
+  //           footer: '<a href="/students">Back to Home</a>'
+  //         })
+  //       }
+  //     });
+  //   } else {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: 'Oops...',
+  //       text: `can't update, check out data again`,
+  //       footer: '<a href="/students">Back to Home</a>'
+  //     })
+  //   }
   // }
+
 }

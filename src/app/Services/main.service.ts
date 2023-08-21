@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { Injectable } from '@angular/core';
 export class MainService {
 
   constructor(private client: HttpClient) {}
-  private Base_URL = 'https://students-dashboard.onrender.com/students';
+  private readonly Base_URL = environment.apiUrl;
   // Handling All request methods
   getAllStudents(){
     return this.client.get(this.Base_URL);
@@ -21,7 +22,7 @@ export class MainService {
   deleteStudent(id:any){
     return this.client.delete(`${this.Base_URL}/${id}`);
   }
-  updateStudent(id: any, name:any, age:any, address:any, email:any, mobile:any){
-    return this.client.put(this.Base_URL+"/"+id, {name, age, address, email, mobile});
+  updateStudent(id: number ,updateStudent: any){
+    return this.client.put(this.Base_URL+"/"+id, updateStudent);
   }
 }

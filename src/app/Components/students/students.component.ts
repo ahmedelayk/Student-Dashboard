@@ -40,14 +40,14 @@ export class StudentsComponent implements OnInit{
   get_All_Students(){
     this.service.getAllStudents().subscribe({
       next:(data)=>{
-        console.log(data);
+        // console.log(data);
         this.students = data;
       },
       error:(err)=>console.log(err)
     });
   }
   clickYes(){
-    console.log('yessss');
+    // console.log('yessss');
     this.deleteAnswer = true;
     this.deleteShow = false;
   }

@@ -9,24 +9,27 @@ import Swal from 'sweetalert2';
   styleUrls: ['./student-details.component.css']
 })
 export class StudentDetailsComponent implements OnInit{
-  ID:any;
-  student:any;
-  constructor(public route:ActivatedRoute, public service:MainService, public ro:Router){
-    // console.log(route.snapshot.params["id"]);
-  }
+  studentId!:any;
+  student!:any;
+  constructor(private activatedRoute:ActivatedRoute, private service:MainService, private router:Router){}
   ngOnInit(): void {
-    this.ID = this.route.snapshot.params["id"];
-    this.service.getStudentById(this.ID).subscribe({
+    this.studentId = this.activatedRoute.snapshot.params["id"];
+    this.fetchStudentDataById(this.studentId);
+  }
+
+  updateStudent(){
+    this.router.navigate([`update/${this.studentId}`])
+  }
+
+  fetchStudentDataById(id: number) {
+    this.service.getStudentById(id).subscribe({
       next:(s)=>{
-        console.log(s);
         this.student = s;
       },
-      error: (err)=> {console.log(err)}
+      error: (err)=> console.log(err)
     })
   }
-  updateStudent(){
 
-  }
   deleteStudent(id:any){
     Swal.fire({
       title: 'Are you sure?',
@@ -39,7 +42,7 @@ export class StudentDetailsComponent implements OnInit{
     }).then((result) => {
       if (result.isConfirmed) {
         this.service.deleteStudent(id).subscribe();
-        this.ro.navigateByUrl("/students")
+        this.router.navigate(['students']);
         Swal.fire(
           'Deleted!',
           'Student has been deleted.',
